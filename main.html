@@ -208,8 +208,8 @@ a.btn{ text-decoration:none }
         </div>
       </div>
       <nav class="nav">
-        <a href="account.html" target="login.html">Account</a>
-        <a href="About.html" target="about.html">About</a>
+        <a href="account.html" target="account.html">Account</a>
+        <a href="About.html" target="About.html">About</a>
         <a href="shop.html">Shop</a>
         <a href="#" class="btn ghost" onclick="document.getElementById('cartBox').scrollIntoView({behavior:'smooth'});return false;">Checkout</a>
       </nav>
@@ -486,7 +486,7 @@ function updateCartUI(){
   total.innerText = fmtEUR(sum);
 }
   function simulatePurchase() {
-    window.location.href = "Payment.html";
+    window.location.href = "shop.html";
   }
 
     // ===== Full item list frame with 2 pages =====
@@ -574,3 +574,4 @@ document.addEventListener("DOMContentLoaded", ()=>{
 </script>
 </body>
 </html>
+
