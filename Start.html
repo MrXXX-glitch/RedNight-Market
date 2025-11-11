@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>RedNight — Sign In</title>
+    <style>
+        body {
+            font-family: "Inter", system-ui, sans-serif;
+            background: linear-gradient(135deg, #007bff, #00b4d8);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: #fff;
+            color: #222;
+            border-radius: 10px;
+            padding: 30px;
+            width: 320px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            color: #007bff;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 6px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        button {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px;
+            width: 100%;
+            font-size: 15px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056d2;
+        }
+
+        .link {
+            font-size: 13px;
+            margin-top: 10px;
+            display: block;
+            color: #007bff;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .error {
+            color: red;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        .success {
+            color: green;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card" id="loginCard">
+        <h1>RedNight</h1>
+        <h3>Login</h3>
+        <input id="loginUser" placeholder="Username" />
+        <input id="loginPass" type="password" placeholder="Password" />
+        <button onclick="login()">Login</button>
+        <span class="link" onclick="showRegister()">Create account</span>
+        <div id="loginMsg"></div>
+    </div>
+
+    <div class="card" id="registerCard" style="display:none;">
+        <h1>Register</h1>
+        <input id="regUser" placeholder="Choose username" />
+        <input id="regPass" type="password" placeholder="Choose password" />
+        <button onclick="register()">Register</button>
+        <span class="link" onclick="showLogin()">Back to login</span>
+        <div id="regMsg"></div>
+    </div>
+
+    <script>
+        const usernamePattern = /^[A-Za-z0-9]+$/; // only letters and numbers
+
+        function showRegister() {
+            document.getElementById('loginCard').style.display = 'none';
+            document.getElementById('registerCard').style.display = 'block';
+        }
+        function showLogin() {
+            document.getElementById('registerCard').style.display = 'none';
+            document.getElementById('loginCard').style.display = 'block';
+        }
+
+        function register() {
+            const user = document.getElementById('regUser').value.trim();
+            const pass = document.getElementById('regPass').value.trim();
+            const msg = document.getElementById('regMsg');
+
+            if (!user || !pass) {
+                msg.textContent = "Both fields are required.";
+                msg.className = "error";
+                return;
+            }
+            if (!usernamePattern.test(user) || !usernamePattern.test(pass)) {
+                msg.textContent = "Only letters and numbers allowed (no symbols).";
+                msg.className = "error";
+                return;
+            }
+
+            const existing = JSON.parse(localStorage.getItem("users") || "{}");
+            if (existing[user]) {
+                msg.textContent = "Username already exists.";
+                msg.className = "error";
+                return;
+            }
+
+            existing[user] = pass; // store plain for demo
+            localStorage.setItem("users", JSON.stringify(existing));
+            msg.textContent = "Account created successfully!";
+            msg.className = "success";
+        }
+
+        function login() {
+            const user = document.getElementById('loginUser').value.trim();
+            const pass = document.getElementById('loginPass').value.trim();
+            const msg = document.getElementById('loginMsg');
+
+            const existing = JSON.parse(localStorage.getItem("users") || "{}");
+
+            if (existing[user] && existing[user] === pass) {
+                msg.textContent = "Login successful! Redirecting...";
+                msg.className = "success";
+                setTimeout(() => {
+                    window.location.href = "index.html"; // redirect to your site
+                }, 800);
+            } else {
+                msg.textContent = "Invalid username or password.";
+                msg.className = "error";
+            }
+        }
+    </script>
+
+</body>
+
+</html>
